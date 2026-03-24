@@ -1,0 +1,45 @@
+{
+  "name": "@titus/syncdesk",
+  "version": "0.1.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/Titus-System/syncdesk-library/issues"
+  },
+  "homepage": "https://github.com/Titus-System/syncdesk-library#readme",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.95.2",
+    "react": "^19.2.4"
+  },
+  "dependencies": {
+    "axios": "^1.13.6"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Titus-System/syncdesk-library.git"
+  }
+}
