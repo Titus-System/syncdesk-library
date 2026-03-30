@@ -8,7 +8,7 @@
     "jsx": "react-jsx",
 
     /* Module Resolution */
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
 
     /* Strict Type-Checking */
@@ -19,7 +19,10 @@
 
     /* Type Declaration Output */
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+
+    "rootDir": "./src",
+    "outDir": "./dist",
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

@@ -10,18 +10,18 @@
   },
   "homepage": "https://github.com/Titus-System/syncdesk-library#readme",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "require": "./dist/index.js"
     }
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch"
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc",
+    "dev": "tsc --watch"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -35,7 +35,6 @@
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
-    "tsup": "^8.5.1",
     "typescript": "^6.0.2"
   },
   "repository": {
