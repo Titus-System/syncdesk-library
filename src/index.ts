@@ -1,5 +1,8 @@
 export * from "./auth";
 export * from "./api";
+export * from "./users";
+export * from "./roles";
+export * from "./permissions";
 
 export { config } from "./config";
 export type { LibraryConfig } from "./config";
