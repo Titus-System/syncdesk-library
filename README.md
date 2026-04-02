@@ -9,7 +9,7 @@ Essa biblioteca fornece recursos para as aplicações frontend do sistema SyncDe
 ### Install from npm registry
 
 ```sh
-npm install @titus/syncdesk
+npm install @titus-system/syncdesk
 ```
 
 ### Install locally
@@ -28,6 +28,9 @@ npm install /path/to/your/library-1.0.0.tgz
 ## Publish new version to npm registry
 
 ```sh
+# You may have to login to npm registry first with `npm login`
+npm login
+
 npm run build && npm publish
 ```
 
