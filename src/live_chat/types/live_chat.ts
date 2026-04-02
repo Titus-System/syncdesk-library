@@ -1,3 +1,11 @@
+export interface SendMessagePayload {
+  type: "text" | "file";
+  content: string;
+  mime_type?: string | null;
+  filename?: string | null;
+  responding_to?: string | null;
+}
+
 export interface ChatMessage {
   id: string;
   conversation_id: string;

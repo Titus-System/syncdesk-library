@@ -5,6 +5,8 @@ export {
   useSetConversationAgent,
 } from "./hooks/useLiveChat";
 
+export { useLiveChatWebSocket } from "./hooks/useLiveChatWebSocket";
+
 export type {
   ChatMessage,
   Conversation,
