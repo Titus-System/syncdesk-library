@@ -26,7 +26,24 @@ export const useGetConversations = (ticket_id: string) => {
 };
 
 /**
- * Get paginated messages for a ticket.
+ * Get a specific client's conversations.
+ * @param client_id
+ */
+export const useGetClientConversations = (client_id: string) => {
+  return useQuery({
+    queryKey: ["conversations", "client", client_id],
+    queryFn: async (): Promise<Conversation[]> => {
+      const response = await apiClient.get<ApiResponse<Conversation[]>>(
+        `${PATH}/client/${client_id}`,
+      );
+      return response.data.data;
+    },
+    enabled: !!client_id,
+  });
+};
+
+/**
+ * Get ticket messages with pagination.
  * @param ticket_id
  * @param page
  * @param limit
@@ -93,9 +110,6 @@ export const useSetConversationAgent = () => {
     }): Promise<void> => {
       await apiClient.patch(`${PATH}/${chat_id}/set-agent/${agent_id}`);
     },
-    // We invalidate the ticket conversations here.
-    // To do so effectively, you may need the ticket_id, but the mutation only receives the chat_id.
-    // If ticket list invalidation is required, invalidate the whole 'conversations' key.
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["conversations"] });
     },
