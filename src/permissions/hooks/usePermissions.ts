@@ -9,12 +9,15 @@ import type {
   AddPermissionRolesDTO,
 } from "../types/permission";
 
+const PATH = "/permissions";
+
 export function usePermissions() {
   return useQuery<Permission[]>({
     queryKey: ["permissions"],
     queryFn: async () => {
-      const response =
-        await apiClient.get<ApiResponse<Permission[]>>("/permissions/");
+      const response = await apiClient.get<ApiResponse<Permission[]>>(
+        `${PATH}/`,
+      );
       return response.data.data;
     },
   });
@@ -25,7 +28,7 @@ export function usePermission(id: number) {
     queryKey: ["permissions", id],
     queryFn: async () => {
       const response = await apiClient.get<ApiResponse<Permission>>(
-        `/permissions/${id}`,
+        `${PATH}/${id}`,
       );
       return response.data.data;
     },
@@ -38,7 +41,7 @@ export function useCreatePermission() {
   return useMutation<Permission, Error, CreatePermissionDTO>({
     mutationFn: async (dto) => {
       const response = await apiClient.post<ApiResponse<Permission>>(
-        "/permissions/",
+        `${PATH}/`,
         dto,
       );
       return response.data.data;
@@ -58,7 +61,7 @@ export function useReplacePermission() {
   >({
     mutationFn: async ({ id, dto }) => {
       const response = await apiClient.put<ApiResponse<Permission>>(
-        `/permissions/${id}`,
+        `${PATH}/${id}`,
         dto,
       );
       return response.data.data;
@@ -79,7 +82,7 @@ export function useUpdatePermission() {
   >({
     mutationFn: async ({ id, dto }) => {
       const response = await apiClient.patch<ApiResponse<Permission>>(
-        `/permissions/${id}`,
+        `${PATH}/${id}`,
         dto,
       );
       return response.data.data;
@@ -96,7 +99,7 @@ export function useDeletePermission() {
   return useMutation<Permission, Error, number>({
     mutationFn: async (id) => {
       const response = await apiClient.delete<ApiResponse<Permission>>(
-        `/permissions/${id}`,
+        `${PATH}/${id}`,
       );
       return response.data.data;
     },
@@ -112,7 +115,7 @@ export function usePermissionRoles(id: number) {
     queryKey: ["permissions", id, "roles"],
     queryFn: async () => {
       const response = await apiClient.get<ApiResponse<Permission>>(
-        `/permissions/${id}/roles`,
+        `${PATH}/${id}/roles`,
       );
       return response.data.data;
     },
@@ -129,7 +132,7 @@ export function useAddPermissionRoles() {
   >({
     mutationFn: async ({ id, dto }) => {
       const response = await apiClient.post<ApiResponse<Permission>>(
-        `/permissions/${id}/roles`,
+        `${PATH}/${id}/roles`,
         dto,
       );
       return response.data.data;

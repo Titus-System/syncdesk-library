@@ -6,6 +6,8 @@ import type {
   ReadyResponse,
 } from "../types/health";
 
+const PATH = "";
+
 /**
  * Ping the server to check for basic connectivity.
  */
@@ -13,7 +15,9 @@ export const usePing = () => {
   return useQuery({
     queryKey: ["health", "ping"],
     queryFn: async (): Promise<PingResponse> => {
-      const response = await apiClient.get<ApiResponse<PingResponse>>("/ping");
+      const response = await apiClient.get<ApiResponse<PingResponse>>(
+        `${PATH}/ping`,
+      );
       return response.data.data;
     },
   });
@@ -26,8 +30,9 @@ export const useHealth = () => {
   return useQuery({
     queryKey: ["health", "status"],
     queryFn: async (): Promise<HealthResponse> => {
-      const response =
-        await apiClient.get<ApiResponse<HealthResponse>>("/health");
+      const response = await apiClient.get<ApiResponse<HealthResponse>>(
+        `${PATH}/health`,
+      );
       return response.data.data;
     },
   });
@@ -40,8 +45,9 @@ export const useReady = () => {
   return useQuery({
     queryKey: ["health", "ready"],
     queryFn: async (): Promise<ReadyResponse> => {
-      const response =
-        await apiClient.get<ApiResponse<ReadyResponse>>("/ready");
+      const response = await apiClient.get<ApiResponse<ReadyResponse>>(
+        `${PATH}/ready`,
+      );
       return response.data.data;
     },
   });
