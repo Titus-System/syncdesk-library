@@ -1,12 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient, ApiResponse } from "../../api";
 import {
+  AdminRegisterUserRequest,
+  ChangePasswordRequest,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
   LoginResponse,
   RegisterUserRequest,
+  ResetPasswordRequest,
   UserCreatedResponse,
   UserLoginRequest,
   UserWithRoles,
 } from "../types/auth";
+import { User } from "../../users/types/user";
 
 const PATH = "auth";
 
@@ -90,6 +96,64 @@ export const useLogout = () => {
       // clear cache
       queryClient.setQueryData(["me"], null);
       queryClient.clear();
+    },
+  });
+};
+
+/**
+ * Register a new user as admin.
+ */
+export const useAdminRegister = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (userData: AdminRegisterUserRequest): Promise<User> => {
+      const response = await apiClient.post<ApiResponse<User>>(
+        `${PATH}/admin/register`,
+        userData,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+};
+
+/**
+ * Change the password of the current user.
+ */
+export const useChangePassword = () => {
+  return useMutation({
+    mutationFn: async (data: ChangePasswordRequest): Promise<void> => {
+      await apiClient.post(`${PATH}/change-password`, data);
+    },
+  });
+};
+
+/**
+ * Request a password reset email.
+ */
+export const useForgotPassword = () => {
+  return useMutation({
+    mutationFn: async (
+      data: ForgotPasswordRequest,
+    ): Promise<ForgotPasswordResponse> => {
+      const response = await apiClient.post<
+        ApiResponse<ForgotPasswordResponse>
+      >(`${PATH}/forgot-password`, data);
+      return response.data.data;
+    },
+  });
+};
+
+/**
+ * Reset a user's password using a valid reset token.
+ */
+export const useResetPassword = () => {
+  return useMutation({
+    mutationFn: async (data: ResetPasswordRequest): Promise<void> => {
+      await apiClient.post(`${PATH}/reset-password`, data);
     },
   });
 };
