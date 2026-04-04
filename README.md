@@ -14,6 +14,8 @@ npm install @titus-system/syncdesk
 
 ### Install locally
 
+Alternatively, you can install locally bypassing the npm registry.
+
 ```sh
 npm run build
 npm pack
@@ -31,7 +33,8 @@ npm install /path/to/your/library-1.0.0.tgz
 # You may have to login to npm registry first with `npm login`
 npm login
 
-npm run build && npm publish
+npm run build
+npm publish --access public
 ```
 
 ---
