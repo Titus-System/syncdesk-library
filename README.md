@@ -27,6 +27,36 @@ It creates a compressed tarball file in your folder. You can install it in your 
 npm install /path/to/your/library-1.0.0.tgz
 ```
 
+### Configure your project to use the library
+
+This lib requires some configuration to work properly, such as the API base URL.
+To do so, you should call the `configLibrary` function in your project, passing the necessary configuration options. For example:
+
+```ts
+import { configLibrary } from "@titus-system/syncdesk";
+configureLibrary({
+  baseURL: 'http://localhost:8000/api', // should not be hardcoded, but in a .env file or similar
+
+  getAccessToken: () => localStorage.getItem('access_token'),
+  getRefreshToken: () => localStorage.getItem('refresh_token'),
+
+  onTokensRefreshed: (newAccess: string, newRefresh: string) => {
+    localStorage.setItem('access_token', newAccess)
+    localStorage.setItem('refresh_token', newRefresh)
+  },
+
+  onUnauthorized: () => {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    window.location.href = '/login'
+
+    // // Mobile-specific logic to clear secure storage and navigate
+    // await SecureStore.deleteItemAsync('access_token')
+    // router.replace('/login')
+  }
+})
+```
+
 ## Publish new version to npm registry
 
 ```sh
