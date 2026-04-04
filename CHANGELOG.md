@@ -8,8 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Get a specific client's conversations.
-
 ### Changed
 
 ### Deprecated
@@ -21,3 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 ### Dev Notes
+
+---
+
+# 0.5.0 - 2026-04-04
+
+### Added
+
+- Get a specific client's conversations.
