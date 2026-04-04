@@ -12,7 +12,7 @@ const PATH = "/users";
 
 /**
  * Get all users.
- * @returns
+ * @returns {UseQueryResult<User[]>} The query result.
  */
 export const useGetUsers = () => {
   return useQuery({
@@ -28,8 +28,8 @@ export const useGetUsers = () => {
 
 /**
  * Get one user.
- * @param id
- * @returns
+ * @param {string} id id parameter.
+ * @returns {UseQueryResult<User>} The query result.
  */
 export const useGetUser = (id: string) => {
   return useQuery({
@@ -44,7 +44,8 @@ export const useGetUser = (id: string) => {
 
 /**
  * Create a user.
- * @returns
+ * @param {CreateUserDTO} user The user creation details.
+ * @returns {UseMutationResult<User, Error, CreateUserDTO>} The mutation result.
  */
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
@@ -63,7 +64,8 @@ export const useCreateUser = () => {
 
 /**
  * Replace an entire user.
- * @returns
+ * @param {{ id: string; data: ReplaceUserDTO }} params The ID and user replacement data.
+ * @returns {UseMutationResult<User, Error, { id: string; data: ReplaceUserDTO }>} The mutation result.
  */
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
@@ -91,7 +93,8 @@ export const useUpdateUser = () => {
 
 /**
  * Update specific fields of a user.
- * @returns
+ * @param {{ id: string; data: UpdateUserDTO }} params The ID and user update data.
+ * @returns {UseMutationResult<User, Error, { id: string; data: UpdateUserDTO }>} The mutation result.
  */
 export const usePatchUser = () => {
   const queryClient = useQueryClient();
@@ -119,7 +122,8 @@ export const usePatchUser = () => {
 
 /**
  * Add roles to a user.
- * @returns
+ * @param {{ id: string; data: AddUserRolesDTO }} params The ID and user roles data.
+ * @returns {UseMutationResult<User, Error, { id: string; data: AddUserRolesDTO }>} The mutation result.
  */
 export const useAddUserRoles = () => {
   const queryClient = useQueryClient();

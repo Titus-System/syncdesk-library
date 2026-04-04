@@ -11,6 +11,10 @@ import type {
 
 const PATH = "/permissions";
 
+/**
+ * List all permissions.
+ * @returns {UseQueryResult<Permission[]>} The query result.
+ */
 export function usePermissions() {
   return useQuery<Permission[]>({
     queryKey: ["permissions"],
@@ -23,6 +27,11 @@ export function usePermissions() {
   });
 }
 
+/**
+ * Get a permission by ID.
+ * @param {number} id id parameter.
+ * @returns {UseQueryResult<Permission>} The query result.
+ */
 export function usePermission(id: number) {
   return useQuery<Permission>({
     queryKey: ["permissions", id],
@@ -36,6 +45,11 @@ export function usePermission(id: number) {
   });
 }
 
+/**
+ * Create a new permission.
+ * @param {CreatePermissionDTO} dto DTO containing details.
+ * @returns {UseMutationResult<Permission, Error, CreatePermissionDTO>} The mutation result.
+ */
 export function useCreatePermission() {
   const queryClient = useQueryClient();
   return useMutation<Permission, Error, CreatePermissionDTO>({
@@ -52,6 +66,14 @@ export function useCreatePermission() {
   });
 }
 
+/**
+ * Replace a permission by ID.
+ * @param {number} id ID.
+ * @param {ReplacePermissionDTO} dto DTO containing details.
+ * @returns {UseMutationResult<Permission,
+    Error,
+    { id: number; dto: ReplacePermissionDTO }>} The mutation result.
+ */
 export function useReplacePermission() {
   const queryClient = useQueryClient();
   return useMutation<
@@ -73,6 +95,14 @@ export function useReplacePermission() {
   });
 }
 
+/**
+ * Update a permission by ID.
+ * @param {number} id ID.
+ * @param {UpdatePermissionDTO} dto DTO containing details.
+ * @returns {UseMutationResult<Permission,
+    Error,
+    { id: number; dto: UpdatePermissionDTO }>} The mutation result.
+ */
 export function useUpdatePermission() {
   const queryClient = useQueryClient();
   return useMutation<
@@ -94,6 +124,11 @@ export function useUpdatePermission() {
   });
 }
 
+/**
+ * Delete a permission by ID.
+ * @param {number} dto DTO containing details.
+ * @returns {UseMutationResult<Permission, Error, number>} The mutation result.
+ */
 export function useDeletePermission() {
   const queryClient = useQueryClient();
   return useMutation<Permission, Error, number>({
@@ -110,6 +145,15 @@ export function useDeletePermission() {
   });
 }
 
+/**
+ * Get permission with associated roles.
+ *
+ * All roles that have this permission will be included in the
+ * response under a `roles` field.
+ *
+ * @param {number} id id parameter.
+ * @returns {UseQueryResult<Permission>} The query result.
+ */
 export function usePermissionRoles(id: number) {
   return useQuery<Permission>({
     queryKey: ["permissions", id, "roles"],
@@ -123,6 +167,14 @@ export function usePermissionRoles(id: number) {
   });
 }
 
+/**
+ * Add a permission to a list of roles.
+ * @param {number} id ID.
+ * @param {AddPermissionRolesDTO} dto DTO containing details.
+ * @returns {UseMutationResult<Permission,
+    Error,
+    { id: number; dto: AddPermissionRolesDTO }>} The mutation result.
+ */
 export function useAddPermissionRoles() {
   const queryClient = useQueryClient();
   return useMutation<

@@ -9,8 +9,9 @@ import {
 const PATH = "/conversations";
 
 /**
- * Get all conversations recursively mapping to a ticket.
- * @param ticket_id
+ * Get all conversations of a ticket.
+ * @param {string} ticket_id ticket_id parameter.
+ * @returns {UseQueryResult<Conversation[]>} The query result.
  */
 export const useGetConversations = (ticket_id: string) => {
   return useQuery({
@@ -27,7 +28,8 @@ export const useGetConversations = (ticket_id: string) => {
 
 /**
  * Get a specific client's conversations.
- * @param client_id
+ * @param {string} client_id client_id parameter.
+ * @returns {UseQueryResult<Conversation[]>} The query result.
  */
 export const useGetClientConversations = (client_id: string) => {
   return useQuery({
@@ -44,9 +46,10 @@ export const useGetClientConversations = (client_id: string) => {
 
 /**
  * Get ticket messages with pagination.
- * @param ticket_id
- * @param page
- * @param limit
+ * @param {string} ticket_id ticket_id parameter.
+ * @param {number} page page parameter.
+ * @param {number} limit limit parameter.
+ * @returns {UseQueryResult<PaginatedMessages>} The query result.
  */
 export const useGetPaginatedMessages = (
   ticket_id: string,
@@ -73,7 +76,9 @@ export const useGetPaginatedMessages = (
 };
 
 /**
- * Create a new conversation mapping to a ticket.
+ * Create a new conversation.
+ * @param {CreateConversationDTO} dto The conversation creation details.
+ * @returns {UseMutationResult<Conversation, Error, CreateConversationDTO>} The mutation result.
  */
 export const useCreateConversation = () => {
   const queryClient = useQueryClient();
@@ -96,6 +101,8 @@ export const useCreateConversation = () => {
 
 /**
  * Assign an agent to a conversation.
+ * @param {{ chat_id: string; agent_id: string }} params The chat ID and agent ID payload.
+ * @returns {UseMutationResult<void, Error, { chat_id: string; agent_id: string }>} The mutation result.
  */
 export const useSetConversationAgent = () => {
   const queryClient = useQueryClient();

@@ -10,6 +10,7 @@ const PATH = "";
 
 /**
  * Ping the server to check for basic connectivity.
+ * @returns {UseQueryResult<PingResponse, Error>} The result.
  */
 export const usePing = () => {
   return useQuery({
@@ -25,6 +26,7 @@ export const usePing = () => {
 
 /**
  * Check the detailed health of the server and its dependencies (e.g. databases).
+ * @returns {UseQueryResult<HealthResponse, Error>} The result.
  */
 export const useHealth = () => {
   return useQuery({
@@ -40,6 +42,7 @@ export const useHealth = () => {
 
 /**
  * Check if the server is ready to accept traffic.
+ * @returns {UseQueryResult<ReadyResponse, Error>} The result.
  */
 export const useReady = () => {
   return useQuery({

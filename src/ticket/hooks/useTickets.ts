@@ -18,7 +18,11 @@ export const TICKET_KEYS = {
     [...TICKET_KEYS.all, "list", filters] as const,
 };
 
-/** Get all tickets. */
+/**
+ * Get all tickets.
+ * @param {TicketSearchFilters} filters filters parameter.
+ * @returns {UseQueryResult<TicketResponse[]>} The query result.
+ */
 export const useTickets = (filters: TicketSearchFilters = {}) => {
   return useQuery({
     queryKey: TICKET_KEYS.list(filters),
@@ -32,7 +36,11 @@ export const useTickets = (filters: TicketSearchFilters = {}) => {
   });
 };
 
-/** Create a new ticket. */
+/**
+ * Create a new ticket.
+ * @param {CreateTicketRequest} payload The ticket creation details.
+ * @returns {UseMutationResult<CreateTicketResponse, Error, CreateTicketRequest>} The mutation result.
+ */
 export const useCreateTicket = () => {
   const queryClient = useQueryClient();
 
@@ -53,7 +61,11 @@ export const useCreateTicket = () => {
   });
 };
 
-/** Update a ticket's status. */
+/**
+ * Update a ticket's status.
+ * @param {{ ticketId: string; payload: UpdateTicketStatusRequest }} params The ticket ID and status update payload.
+ * @returns {UseMutationResult<UpdateTicketStatusResponse, Error, { ticketId: string; payload: UpdateTicketStatusRequest }>} The mutation result.
+ */
 export const useUpdateTicketStatus = () => {
   const queryClient = useQueryClient();
 

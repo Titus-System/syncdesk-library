@@ -18,6 +18,7 @@ const PATH = "auth";
 
 /**
  * Get the currently authenticated user's profile.
+ * @returns {UseQueryResult<UserWithRoles, Error>} The query result.
  */
 export const useGetMe = () => {
   return useQuery({
@@ -38,6 +39,8 @@ export const useGetMe = () => {
  * Log in a user.
  *
  * Refresh tokens are handled automatically using Interceptors.
+ * @param {UserLoginRequest} credentials The user login credentials.
+ * @returns {UseMutationResult<LoginResponse, Error, UserLoginRequest>} The mutation result.
  */
 export const useLogin = () => {
   const queryClient = useQueryClient();
@@ -61,6 +64,8 @@ export const useLogin = () => {
 
 /**
  * Register a new user.
+ * @param {RegisterUserRequest} userData The user registration details.
+ * @returns {UseMutationResult<UserCreatedResponse, Error, RegisterUserRequest>} The mutation result.
  */
 export const useRegister = () => {
   const queryClient = useQueryClient();
@@ -84,6 +89,7 @@ export const useRegister = () => {
 
 /**
  * Log out the current user.
+ * @returns {UseMutationResult<void, Error, void>} The mutation result.
  */
 export const useLogout = () => {
   const queryClient = useQueryClient();
@@ -102,6 +108,8 @@ export const useLogout = () => {
 
 /**
  * Register a new user as admin.
+ * @param {AdminRegisterUserRequest} userData The admin user registration details.
+ * @returns {UseMutationResult<User, Error, AdminRegisterUserRequest>} The mutation result.
  */
 export const useAdminRegister = () => {
   const queryClient = useQueryClient();
@@ -121,7 +129,9 @@ export const useAdminRegister = () => {
 };
 
 /**
- * Change the password of the current user.
+ * Change the current user's password.
+ * @param {ChangePasswordRequest} data The password change request details.
+ * @returns {UseMutationResult<void, Error, ChangePasswordRequest>} The mutation result.
  */
 export const useChangePassword = () => {
   return useMutation({
@@ -132,7 +142,9 @@ export const useChangePassword = () => {
 };
 
 /**
- * Request a password reset email.
+ * Request a password reset.
+ * @param {ForgotPasswordRequest} data The forgot password request details.
+ * @returns {UseMutationResult<ForgotPasswordResponse, Error, ForgotPasswordRequest>} The mutation result.
  */
 export const useForgotPassword = () => {
   return useMutation({
@@ -148,7 +160,9 @@ export const useForgotPassword = () => {
 };
 
 /**
- * Reset a user's password using a valid reset token.
+ * Reset the current user's password using a valid reset token.
+ * @param {ResetPasswordRequest} data The reset password request details.
+ * @returns {UseMutationResult<void, Error, ResetPasswordRequest>} The mutation result.
  */
 export const useResetPassword = () => {
   return useMutation({
