@@ -23,4 +23,4 @@ export interface AddProductToCompaniesDTO {
   company_ids: string[];
 }
 
-export interface RemoveProductFromCompaniesDTO extends AddProductToCompaniesDTO
+export interface RemoveProductFromCompaniesDTO extends AddProductToCompaniesDTO {}
