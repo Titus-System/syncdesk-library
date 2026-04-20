@@ -6,6 +6,7 @@ export * from "./permissions";
 export * from "./live_chat";
 export * from "./health";
 export * from "./ticket";
+export * from "./companies";
 
 export { config } from "./config";
 export type { LibraryConfig } from "./config";
