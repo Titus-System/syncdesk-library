@@ -1,6 +1,6 @@
 # SyncDesk Library
 
-Biblioteca de integração do [SyncDesk](https://github.com/Titus-System/SyncDesk).
+SDK (Software Development Kit) para integração com o [SyncDesk](https://github.com/Titus-System/SyncDesk).
 
 Essa biblioteca fornece recursos para as aplicações frontend do sistema SyncDesk, permitindo a comunicação eficiente e segura entre os componentes do sistema. Ela inclui funcionalidades de autenticação, gerenciamento de requisições para o backend e manipulação de dados, facilitando a construção de interfaces de usuário responsivas e interativas.
 
