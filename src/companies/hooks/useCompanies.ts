@@ -161,7 +161,7 @@ export function useAddCompanyProducts() {
  * Remove multiple products from a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; dto: RemoveCompanyProductDTO }>}
  */
-export function useRemoveCompanyProductsBatch() {
+export function useDeleteCompanyProductsBatch() {
   const queryClient = useQueryClient();
   return useMutation<
     void,
@@ -184,7 +184,7 @@ export function useRemoveCompanyProductsBatch() {
  * Remove a specific product from a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; productId: number }>}
  */
-export function useRemoveCompanyProduct() {
+export function useDeleteCompanyProduct() {
   const queryClient = useQueryClient();
   return useMutation<void, Error, { companyId: string; productId: number }>({
     mutationFn: async ({ companyId, productId }) => {
@@ -251,7 +251,7 @@ export function useAddCompanyUsers() {
  * Remove multiple users from a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; dto: RemoveCompanyUsersDTO }>}
  */
-export function useRemoveCompanyUsersBatch() {
+export function useDeleteCompanyUsersBatch() {
   const queryClient = useQueryClient();
   return useMutation<
     void,
@@ -273,7 +273,7 @@ export function useRemoveCompanyUsersBatch() {
  * Remove a specific user from a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; userId: string }>}
  */
-export function useRemoveCompanyUser() {
+export function useDeleteCompanyUser() {
   const queryClient = useQueryClient();
   return useMutation<void, Error, { companyId: string; userId: string }>({
     mutationFn: async ({ companyId, userId }) => {

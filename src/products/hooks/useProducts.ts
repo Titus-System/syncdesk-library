@@ -182,7 +182,7 @@ export function useAddProductToCompanies() {
  * Remove a product from multiple companies in batch.
  * @returns {UseMutationResult<void, Error, { productId: number; dto: RemoveProductFromCompaniesDTO }>}
  */
-export function useRemoveProductFromCompaniesBatch() {
+export function useDeleteProductFromCompaniesBatch() {
   const queryClient = useQueryClient();
   return useMutation<
     void,
@@ -204,7 +204,7 @@ export function useRemoveProductFromCompaniesBatch() {
  * Remove a product from a specific company.
  * @returns {UseMutationResult<void, Error, { productId: number; companyId: string }>}
  */
-export function useRemoveProductCompany() {
+export function useDeleteProductCompany() {
   const queryClient = useQueryClient();
   return useMutation<void, Error, { productId: number; companyId: string }>({
     mutationFn: async ({ productId, companyId }) => {
