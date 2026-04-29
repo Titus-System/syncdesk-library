@@ -3,36 +3,77 @@ import { apiClient, ApiResponse } from "../../api";
 import {
   CreateTicketRequest,
   CreateTicketResponse,
+  TicketPaginatedList,
   TicketResponse,
   TicketSearchFilters,
+  TicketQueueFilters,
+  TicketQueueListResponse,
   UpdateTicketStatusRequest,
   UpdateTicketStatusResponse,
 } from "../types/ticket";
 
 const PATH = "/tickets";
 
-// Query keys
+// Query keys definition for react-query.
 export const TICKET_KEYS = {
   all: ["tickets"] as const,
   list: (filters: TicketSearchFilters) =>
     [...TICKET_KEYS.all, "list", filters] as const,
+  queue: (filters: TicketQueueFilters) =>
+    [...TICKET_KEYS.all, "queue", filters] as const,
+  detail: (ticketId: string) =>
+    [...TICKET_KEYS.all, "detail", ticketId] as const,
 };
 
 /**
- * Get all tickets.
+ * Get all tickets (paginated).
  * @param {TicketSearchFilters} filters filters parameter.
- * @returns {UseQueryResult<TicketResponse[]>} The query result.
+ * @returns {UseQueryResult<TicketPaginatedList<TicketResponse>>} The query result.
  */
 export const useTickets = (filters: TicketSearchFilters = {}) => {
   return useQuery({
     queryKey: TICKET_KEYS.list(filters),
-    queryFn: async (): Promise<TicketResponse[]> => {
-      const response = await apiClient.get<ApiResponse<TicketResponse[]>>(
-        `${PATH}/`,
-        { params: filters },
+    queryFn: async (): Promise<TicketPaginatedList<TicketResponse>> => {
+      const response = await apiClient.get<
+        ApiResponse<TicketPaginatedList<TicketResponse>>
+      >(`${PATH}/`, { params: filters });
+      return response.data.data;
+    },
+  });
+};
+
+/**
+ * Get ticket queue.
+ * @param {TicketQueueFilters} filters queue filters.
+ * @returns {UseQueryResult<TicketQueueListResponse>} The query result.
+ */
+export const useTicketQueue = (filters: TicketQueueFilters = {}) => {
+  return useQuery({
+    queryKey: TICKET_KEYS.queue(filters),
+    queryFn: async (): Promise<TicketQueueListResponse> => {
+      const response = await apiClient.get<
+        ApiResponse<TicketQueueListResponse>
+      >(`${PATH}/queue`, { params: filters });
+      return response.data.data;
+    },
+  });
+};
+
+/**
+ * Get a specific ticket by its ID.
+ * @param {string} ticketId filter parameter.
+ * @returns {UseQueryResult<TicketResponse>} The query result.
+ */
+export const useTicket = (ticketId: string) => {
+  return useQuery({
+    queryKey: TICKET_KEYS.detail(ticketId),
+    queryFn: async (): Promise<TicketResponse> => {
+      const response = await apiClient.get<ApiResponse<TicketResponse>>(
+        `${PATH}/${ticketId}`,
       );
       return response.data.data;
     },
+    enabled: !!ticketId,
   });
 };
 

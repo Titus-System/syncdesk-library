@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Chatbot integration ([#93](https://github.com/orgs/Titus-System/projects/11/views/1?filterQuery=sprints%3A%22Sprints+2%22&sliceBy%5Bvalue%5D=WesleyGoncalves&pane=issue&itemId=176735264&issue=Titus-System%7CSyncDesk%7C93))
+- Update Tickets endpoints for new API version ([#94](https://github.com/orgs/Titus-System/projects/11/views/1?filterQuery=sprints%3A%22Sprints+2%22&sliceBy%5Bvalue%5D=WesleyGoncalves&pane=issue&itemId=176735629&issue=Titus-System%7CSyncDesk%7C94))
+
 ### Changed
 
 ### Deprecated
