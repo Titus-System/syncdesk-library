@@ -136,3 +136,38 @@ export interface UpdateTicketStatusResponse {
   previous_status: TicketStatus;
   current_status: TicketStatus;
 }
+
+// --- Ticket Comments ---
+export interface AddTicketCommentRequest {
+  text: string;
+  internal?: boolean;
+}
+
+export interface UpdateTicketCommentRequest {
+  author?: string;
+  text?: string;
+  internal?: boolean;
+}
+
+// --- Actions ---
+export interface AssignTicketRequest {
+  agent_id: string;
+  reason?: string;
+}
+
+export interface EscalateTicketRequest {
+  target_agent_id: string;
+  reason: string;
+}
+
+export interface TransferTicketRequest {
+  target_agent_id: string;
+  reason: string;
+}
+
+export interface UpdateTicketRequest {
+  status?: TicketStatus;
+  criticality?: TicketCriticality;
+  product?: string;
+  description?: string;
+}

@@ -10,6 +10,12 @@ import {
   TicketQueueListResponse,
   UpdateTicketStatusRequest,
   UpdateTicketStatusResponse,
+  AddTicketCommentRequest,
+  UpdateTicketCommentRequest,
+  AssignTicketRequest,
+  EscalateTicketRequest,
+  TransferTicketRequest,
+  UpdateTicketRequest,
 } from "../types/ticket";
 
 const PATH = "/tickets";
@@ -23,6 +29,8 @@ export const TICKET_KEYS = {
     [...TICKET_KEYS.all, "queue", filters] as const,
   detail: (ticketId: string) =>
     [...TICKET_KEYS.all, "detail", ticketId] as const,
+  comments: (ticketId: string) =>
+    [...TICKET_KEYS.detail(ticketId), "comments"] as const,
 };
 
 /**
@@ -125,6 +133,178 @@ export const useUpdateTicketStatus = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TICKET_KEYS.all });
+    },
+  });
+};
+
+/**
+ * Add a comment to a ticket.
+ */
+export const useAddTicketComment = (ticketId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: AddTicketCommentRequest) => {
+      const response = await apiClient.post<ApiResponse<any>>(
+        `${PATH}/${ticketId}/comments`,
+        payload,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: TICKET_KEYS.comments(ticketId),
+      });
+    },
+  });
+};
+
+/**
+ * List comments for a ticket.
+ */
+export const useTicketComments = (ticketId: string) => {
+  return useQuery({
+    queryKey: TICKET_KEYS.comments(ticketId),
+    queryFn: async () => {
+      const response = await apiClient.get<ApiResponse<any[]>>(
+        `${PATH}/${ticketId}/comments`,
+      );
+      return response.data.data;
+    },
+    enabled: !!ticketId,
+  });
+};
+
+/**
+ * Update a ticket comment.
+ */
+export const useUpdateTicketComment = (ticketId: string, commentId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: UpdateTicketCommentRequest) => {
+      const response = await apiClient.patch<ApiResponse<any>>(
+        `${PATH}/${ticketId}/comments/${commentId}`,
+        payload,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: TICKET_KEYS.comments(ticketId),
+      });
+    },
+  });
+};
+
+/**
+ * Delete a ticket comment.
+ */
+export const useDeleteTicketComment = (ticketId: string, commentId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const response = await apiClient.delete<ApiResponse<any>>(
+        `${PATH}/${ticketId}/comments/${commentId}`,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: TICKET_KEYS.comments(ticketId),
+      });
+    },
+  });
+};
+
+/**
+ * Assign a ticket to an agent.
+ */
+export const useAssignTicket = (ticketId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: AssignTicketRequest) => {
+      const response = await apiClient.post<ApiResponse<TicketResponse>>(
+        `${PATH}/${ticketId}/assign`,
+        payload,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TICKET_KEYS.detail(ticketId) });
+    },
+  });
+};
+
+/**
+ * Escalate a ticket.
+ */
+export const useEscalateTicket = (ticketId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: EscalateTicketRequest) => {
+      const response = await apiClient.post<ApiResponse<TicketResponse>>(
+        `${PATH}/${ticketId}/escalate`,
+        payload,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TICKET_KEYS.detail(ticketId) });
+    },
+  });
+};
+
+/**
+ * Transfer a ticket to another agent.
+ */
+export const useTransferTicket = (ticketId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: TransferTicketRequest) => {
+      const response = await apiClient.post<ApiResponse<TicketResponse>>(
+        `${PATH}/${ticketId}/transfer`,
+        payload,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TICKET_KEYS.detail(ticketId) });
+    },
+  });
+};
+
+/**
+ * Take a ticket (assign to self).
+ */
+export const useTakeTicket = (ticketId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const response = await apiClient.post<ApiResponse<TicketResponse>>(
+        `${PATH}/${ticketId}/take`,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TICKET_KEYS.detail(ticketId) });
+    },
+  });
+};
+
+/**
+ * Partially update a ticket (fields like product, description, criticality, status).
+ */
+export const useUpdateTicket = (ticketId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: UpdateTicketRequest) => {
+      const response = await apiClient.patch<ApiResponse<TicketResponse>>(
+        `${PATH}/${ticketId}`,
+        payload,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TICKET_KEYS.detail(ticketId) });
     },
   });
 };
