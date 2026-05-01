@@ -37,6 +37,7 @@ export const TICKET_KEYS = {
  * Get all tickets (paginated).
  * @param {TicketSearchFilters} filters filters parameter.
  * @returns {UseQueryResult<TicketPaginatedList<TicketResponse>>} The query result.
+ * GET /api/tickets/
  */
 export const useTickets = (filters: TicketSearchFilters = {}) => {
   return useQuery({
@@ -54,6 +55,7 @@ export const useTickets = (filters: TicketSearchFilters = {}) => {
  * Get ticket queue.
  * @param {TicketQueueFilters} filters queue filters.
  * @returns {UseQueryResult<TicketQueueListResponse>} The query result.
+ * GET /api/tickets/queue
  */
 export const useTicketQueue = (filters: TicketQueueFilters = {}) => {
   return useQuery({
@@ -71,6 +73,7 @@ export const useTicketQueue = (filters: TicketQueueFilters = {}) => {
  * Get a specific ticket by its ID.
  * @param {string} ticketId filter parameter.
  * @returns {UseQueryResult<TicketResponse>} The query result.
+ * GET /api/tickets/{ticket_id}
  */
 export const useTicket = (ticketId: string) => {
   return useQuery({
@@ -89,6 +92,7 @@ export const useTicket = (ticketId: string) => {
  * Create a new ticket.
  * @param {CreateTicketRequest} payload The ticket creation details.
  * @returns {UseMutationResult<CreateTicketResponse, Error, CreateTicketRequest>} The mutation result.
+ * POST /api/tickets/
  */
 export const useCreateTicket = () => {
   const queryClient = useQueryClient();
@@ -115,6 +119,7 @@ export const useCreateTicket = () => {
  * @param {{ ticketId: string; payload: UpdateTicketStatusRequest }} params The ticket ID and status update payload.
  * @returns {UseMutationResult<UpdateTicketStatusResponse, Error, { ticketId: string; payload: UpdateTicketStatusRequest }>} The mutation result.
  * @deprecated This endpoint is deprecated. Use `useUpdateTicket` instead for more flexible updates.
+ * PATCH /api/tickets/{ticket_id}/status
  */
 export const useUpdateTicketStatus = () => {
   const queryClient = useQueryClient();
@@ -140,6 +145,7 @@ export const useUpdateTicketStatus = () => {
 
 /**
  * Add a comment to a ticket.
+ * POST /api/tickets/{ticket_id}/comments
  */
 export const useAddTicketComment = (ticketId: string) => {
   const queryClient = useQueryClient();
@@ -161,6 +167,7 @@ export const useAddTicketComment = (ticketId: string) => {
 
 /**
  * List comments for a ticket.
+ * GET /api/tickets/{ticket_id}/comments
  */
 export const useTicketComments = (ticketId: string) => {
   return useQuery({
@@ -177,6 +184,7 @@ export const useTicketComments = (ticketId: string) => {
 
 /**
  * Update a ticket comment.
+ * PATCH /api/tickets/{ticket_id}/comments/{comment_id}
  */
 export const useUpdateTicketComment = (ticketId: string, commentId: string) => {
   const queryClient = useQueryClient();
@@ -198,6 +206,7 @@ export const useUpdateTicketComment = (ticketId: string, commentId: string) => {
 
 /**
  * Delete a ticket comment.
+ * DELETE /api/tickets/{ticket_id}/comments/{comment_id}
  */
 export const useDeleteTicketComment = (ticketId: string, commentId: string) => {
   const queryClient = useQueryClient();
@@ -218,6 +227,7 @@ export const useDeleteTicketComment = (ticketId: string, commentId: string) => {
 
 /**
  * Assign a ticket to an agent.
+ * POST /api/tickets/{ticket_id}/assign
  */
 export const useAssignTicket = (ticketId: string) => {
   const queryClient = useQueryClient();
@@ -237,6 +247,7 @@ export const useAssignTicket = (ticketId: string) => {
 
 /**
  * Escalate a ticket.
+ * POST /api/tickets/{ticket_id}/escalate
  */
 export const useEscalateTicket = (ticketId: string) => {
   const queryClient = useQueryClient();
@@ -256,6 +267,7 @@ export const useEscalateTicket = (ticketId: string) => {
 
 /**
  * Transfer a ticket to another agent.
+ * POST /api/tickets/{ticket_id}/transfer
  */
 export const useTransferTicket = (ticketId: string) => {
   const queryClient = useQueryClient();
@@ -275,6 +287,7 @@ export const useTransferTicket = (ticketId: string) => {
 
 /**
  * Take a ticket (assign to self).
+ * POST /api/tickets/{ticket_id}/take
  */
 export const useTakeTicket = (ticketId: string) => {
   const queryClient = useQueryClient();
@@ -293,6 +306,7 @@ export const useTakeTicket = (ticketId: string) => {
 
 /**
  * Partially update a ticket (fields like product, description, criticality, status).
+ * PATCH /api/tickets/{ticket_id}
  */
 export const useUpdateTicket = (ticketId: string) => {
   const queryClient = useQueryClient();

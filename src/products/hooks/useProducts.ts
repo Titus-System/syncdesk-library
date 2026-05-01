@@ -17,6 +17,7 @@ const PATH = "/products";
  * List all products.
  * @param {PaginatedRequest} params Pagination params
  * @returns {UseQueryResult<Product[]>} The query result.
+ * GET /api/products/
  */
 export function useProducts(pagination: PaginatedRequest = {}) {
   return useQuery<Product[]>({
@@ -34,6 +35,7 @@ export function useProducts(pagination: PaginatedRequest = {}) {
  * Get a product by ID.
  * @param {number} id id parameter.
  * @returns {UseQueryResult<Product>} The query result.
+ * GET /api/products/{id}
  */
 export function useProduct(id: number) {
   return useQuery<Product>({
@@ -51,6 +53,7 @@ export function useProduct(id: number) {
 /**
  * Create a new product.
  * @returns {UseMutationResult<Product, Error, CreateProductDTO>} The mutation result.
+ * POST /api/products/
  */
 export function useCreateProduct() {
   const queryClient = useQueryClient();
@@ -71,6 +74,7 @@ export function useCreateProduct() {
 /**
  * Replace a product by ID.
  * @returns {UseMutationResult<Product, Error, { id: number; dto: ReplaceProductDTO }>} The mutation result.
+ * PUT /api/products/{id}
  */
 export function useReplaceProduct() {
   const queryClient = useQueryClient();
@@ -92,6 +96,7 @@ export function useReplaceProduct() {
 /**
  * Update a product by ID.
  * @returns {UseMutationResult<Product, Error, { id: number; dto: UpdateProductDTO }>} The mutation result.
+ * PATCH /api/products/{id}
  */
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
@@ -113,6 +118,7 @@ export function useUpdateProduct() {
 /**
  * Perform a soft delete on a product by ID.
  * @returns {UseMutationResult<Product, Error, number>} The mutation result.
+ * DELETE /api/products/{id}
  */
 export function useDeleteProduct() {
   const queryClient = useQueryClient();
@@ -136,6 +142,7 @@ export function useDeleteProduct() {
  * @param {number} productId The product ID.
  * @param {PaginatedRequest} params Pagination params
  * @returns {UseQueryResult<Company[]>} The query result.
+ * GET /api/products/{product_id}/companies
  */
 export function useProductCompanies(
   productId: number,
@@ -159,6 +166,7 @@ export function useProductCompanies(
 /**
  * Add a product to multiple companies.
  * @returns {UseMutationResult<void, Error, { productId: number; dto: AddProductToCompaniesDTO }>}
+ * POST /api/products/{product_id}/companies
  */
 export function useAddProductToCompanies() {
   const queryClient = useQueryClient();
@@ -181,6 +189,7 @@ export function useAddProductToCompanies() {
 /**
  * Remove a product from multiple companies in batch.
  * @returns {UseMutationResult<void, Error, { productId: number; dto: RemoveProductFromCompaniesDTO }>}
+ * DELETE /api/products/{product_id}/companies
  */
 export function useDeleteProductFromCompaniesBatch() {
   const queryClient = useQueryClient();
@@ -203,6 +212,7 @@ export function useDeleteProductFromCompaniesBatch() {
 /**
  * Remove a product from a specific company.
  * @returns {UseMutationResult<void, Error, { productId: number; companyId: string }>}
+ * DELETE /api/products/{product_id}/companies/{company_id}
  */
 export function useDeleteProductCompany() {
   const queryClient = useQueryClient();

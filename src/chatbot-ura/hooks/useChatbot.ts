@@ -15,6 +15,7 @@ const PATH = "/chatbot";
 /**
  * Initiate a new attendance (triage session).
  * @returns {UseMutationResult<TriageData, Error, void>} The mutation result.
+ * POST /api/chatbot/
  */
 export function useCreateAttendance() {
   const queryClient = useQueryClient();
@@ -36,6 +37,7 @@ export function useCreateAttendance() {
  * List attendances with optional filters and pagination.
  * @param {AttendanceSearchFiltersDTO & PaginatedRequest} params Search filters and pagination
  * @returns {UseQueryResult<AttendanceResponse[]>} The query result.
+ * GET /api/chatbot/
  */
 export function useAttendances(
   params: AttendanceSearchFiltersDTO & PaginatedRequest = {},
@@ -57,6 +59,7 @@ export function useAttendances(
 /**
  * Send a message or interaction (answer) to the chatbot webhook.
  * @returns {UseMutationResult<TriageData, Error, TriageInputDTO>} The mutation result.
+ * POST /api/chatbot/webhook
  */
 export function useSendChatMessage() {
   const queryClient = useQueryClient();
@@ -83,6 +86,7 @@ export function useSendChatMessage() {
  * Get a specific attendance context by its triage ID.
  * @param {string} triageId The triage session identifier.
  * @returns {UseQueryResult<AttendanceResponse>} The query result.
+ * GET /api/chatbot/{triage_id}
  */
 export function useAttendance(triageId: string) {
   return useQuery<AttendanceResponse>({
@@ -100,6 +104,7 @@ export function useAttendance(triageId: string) {
 /**
  * Submit an evaluation rating (1-5) for a completed attendance session.
  * @returns {UseMutationResult<EvaluationResponse, Error, { triageId: string, payload: EvaluationRequest }>}
+ * POST /api/chatbot/{triage_id}/evaluation
  */
 export function useEvaluateAttendance() {
   const queryClient = useQueryClient();

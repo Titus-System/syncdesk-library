@@ -13,6 +13,7 @@ const PATH = "/roles";
 /**
  * List all roles.
  * @returns {UseQueryResult<Role[]>} The query result.
+ * GET /api/roles/
  */
 export function useRoles() {
   return useQuery<Role[]>({
@@ -28,6 +29,7 @@ export function useRoles() {
  * Get a role by ID.
  * @param {number} id id parameter.
  * @returns {UseQueryResult<Role>} The query result.
+ * GET /api/roles/{id}
  */
 export function useRole(id: number) {
   return useQuery<Role>({
@@ -44,6 +46,7 @@ export function useRole(id: number) {
  * Create a new role.
  * @param {CreateRoleDTO} dto DTO containing details.
  * @returns {UseMutationResult<Role, Error, CreateRoleDTO>} The mutation result.
+ * POST /api/roles/
  */
 export function useCreateRole() {
   const queryClient = useQueryClient();
@@ -63,6 +66,7 @@ export function useCreateRole() {
  * @param {number} id ID.
  * @param {ReplaceRoleDTO} dto DTO containing details.
  * @returns {UseMutationResult<Role, Error, { id: number; dto: ReplaceRoleDTO }>} The mutation result.
+ * PUT /api/roles/{id}
  */
 export function useReplaceRole() {
   const queryClient = useQueryClient();
@@ -86,6 +90,7 @@ export function useReplaceRole() {
  * @param {number} id ID.
  * @param {UpdateRoleDTO} dto DTO containing details.
  * @returns {UseMutationResult<Role, Error, { id: number; dto: UpdateRoleDTO }>} The mutation result.
+ * PATCH /api/roles/{id}
  */
 export function useUpdateRole() {
   const queryClient = useQueryClient();
@@ -108,6 +113,7 @@ export function useUpdateRole() {
  * Delete a role by ID.
  * @param {number} dto DTO containing details.
  * @returns {UseMutationResult<Role, Error, number>} The mutation result.
+ * DELETE /api/roles/{id}
  */
 export function useDeleteRole() {
   const queryClient = useQueryClient();
@@ -129,6 +135,7 @@ export function useDeleteRole() {
  * Get the permissions for a role by ID.
  * @param {number} id id parameter.
  * @returns {UseQueryResult<Role>} The query result.
+ * GET /api/roles/{id}/permissions
  */
 export function useRolePermissions(id: number) {
   return useQuery<Role>({
@@ -149,6 +156,7 @@ export function useRolePermissions(id: number) {
  * @param {number} id ID.
  * @param {AddRolePermissionsDTO} dto DTO containing details.
  * @returns {UseMutationResult<Role, Error, { id: number; dto: AddRolePermissionsDTO }>} The mutation result.
+ * POST /api/roles/{id}/permissions
  */
 export function useAddRolePermissions() {
   const queryClient = useQueryClient();

@@ -20,6 +20,7 @@ const PATH = "/companies";
  * List all companies.
  * @param {PaginatedRequest} params Pagination params
  * @returns {UseQueryResult<Company[]>} The query result.
+ * GET /api/companies/
  */
 export function useCompanies(pagination: PaginatedRequest = {}) {
   return useQuery<Company[]>({
@@ -37,6 +38,7 @@ export function useCompanies(pagination: PaginatedRequest = {}) {
  * Get a company by ID.
  * @param {string} id id parameter.
  * @returns {UseQueryResult<Company>} The query result.
+ * GET /api/companies/{id}
  */
 export function useCompany(id: string) {
   return useQuery<Company>({
@@ -54,6 +56,7 @@ export function useCompany(id: string) {
 /**
  * Create a new company.
  * @returns {UseMutationResult<Company, Error, CreateCompanyDTO>} The mutation result.
+ * POST /api/companies/
  */
 export function useCreateCompany() {
   const queryClient = useQueryClient();
@@ -74,6 +77,7 @@ export function useCreateCompany() {
 /**
  * Replace a company by ID.
  * @returns {UseMutationResult<Company, Error, { id: string; dto: ReplaceCompanyDTO }>} The mutation result.
+ * PUT /api/companies/{id}
  */
 export function useReplaceCompany() {
   const queryClient = useQueryClient();
@@ -95,6 +99,7 @@ export function useReplaceCompany() {
 /**
  * Update a company by ID.
  * @returns {UseMutationResult<Company, Error, { id: string; dto: UpdateCompanyDTO }>} The mutation result.
+ * PATCH /api/companies/{id}
  */
 export function useUpdateCompany() {
   const queryClient = useQueryClient();
@@ -116,6 +121,7 @@ export function useUpdateCompany() {
 /**
  * Perform a soft delete on a company by ID.
  * @returns {UseMutationResult<Company, Error, string>} The mutation result.
+ * DELETE /api/companies/{id}
  */
 export function useDeleteCompany() {
   const queryClient = useQueryClient();
@@ -137,6 +143,7 @@ export function useDeleteCompany() {
 /**
  * Add products to a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; dto: AddCompanyProductDTO }>}
+ * POST /api/companies/{companyId}/products
  */
 export function useAddCompanyProducts() {
   const queryClient = useQueryClient();
@@ -160,6 +167,7 @@ export function useAddCompanyProducts() {
 /**
  * Remove multiple products from a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; dto: RemoveCompanyProductDTO }>}
+ * DELETE /api/companies/{companyId}/products
  */
 export function useDeleteCompanyProductsBatch() {
   const queryClient = useQueryClient();
@@ -183,6 +191,7 @@ export function useDeleteCompanyProductsBatch() {
 /**
  * Remove a specific product from a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; productId: number }>}
+ * DELETE /api/companies/{companyId}/products/{productId}
  */
 export function useDeleteCompanyProduct() {
   const queryClient = useQueryClient();
@@ -205,6 +214,7 @@ export function useDeleteCompanyProduct() {
  * @param {string} companyId The company ID.
  * @param {PaginatedRequest} params Pagination params
  * @returns {UseQueryResult<User[]>} The query result.
+ * GET /api/companies/{companyId}/users
  */
 export function useCompanyUsers(
   companyId: string,
@@ -228,6 +238,7 @@ export function useCompanyUsers(
 /**
  * Add users to a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; dto: AddCompanyUsersDTO }>}
+ * POST /api/companies/{companyId}/users
  */
 export function useAddCompanyUsers() {
   const queryClient = useQueryClient();
@@ -250,6 +261,7 @@ export function useAddCompanyUsers() {
 /**
  * Remove multiple users from a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; dto: RemoveCompanyUsersDTO }>}
+ * DELETE /api/companies/{companyId}/users
  */
 export function useDeleteCompanyUsersBatch() {
   const queryClient = useQueryClient();
@@ -272,6 +284,7 @@ export function useDeleteCompanyUsersBatch() {
 /**
  * Remove a specific user from a company.
  * @returns {UseMutationResult<void, Error, { companyId: string; userId: string }>}
+ * DELETE /api/companies/{companyId}/users/{userId}
  */
 export function useDeleteCompanyUser() {
   const queryClient = useQueryClient();
