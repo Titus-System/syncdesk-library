@@ -6,6 +6,8 @@ import {
   ReplaceUserDTO,
   UpdateUserDTO,
   AddUserRolesDTO,
+  RemoveUserRolesDTO,
+  UpdateUserRolesDTO,
 } from "../types/user";
 
 const PATH = "/users";
@@ -13,6 +15,7 @@ const PATH = "/users";
 /**
  * Get all users.
  * @returns {UseQueryResult<User[]>} The query result.
+ * GET /api/users/
  */
 export const useGetUsers = () => {
   return useQuery({
@@ -30,6 +33,7 @@ export const useGetUsers = () => {
  * Get one user.
  * @param {string} id id parameter.
  * @returns {UseQueryResult<User>} The query result.
+ * GET /api/users/{id}
  */
 export const useGetUser = (id: string) => {
   return useQuery({
@@ -46,6 +50,7 @@ export const useGetUser = (id: string) => {
  * Create a user.
  * @param {CreateUserDTO} user The user creation details.
  * @returns {UseMutationResult<User, Error, CreateUserDTO>} The mutation result.
+ * POST /api/users/
  */
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
@@ -66,6 +71,7 @@ export const useCreateUser = () => {
  * Replace an entire user.
  * @param {{ id: string; data: ReplaceUserDTO }} params The ID and user replacement data.
  * @returns {UseMutationResult<User, Error, { id: string; data: ReplaceUserDTO }>} The mutation result.
+ * PUT /api/users/{id}
  */
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
@@ -95,6 +101,7 @@ export const useUpdateUser = () => {
  * Update specific fields of a user.
  * @param {{ id: string; data: UpdateUserDTO }} params The ID and user update data.
  * @returns {UseMutationResult<User, Error, { id: string; data: UpdateUserDTO }>} The mutation result.
+ * PATCH /api/users/{id}
  */
 export const usePatchUser = () => {
   const queryClient = useQueryClient();
@@ -124,6 +131,7 @@ export const usePatchUser = () => {
  * Add roles to a user.
  * @param {{ id: string; data: AddUserRolesDTO }} params The ID and user roles data.
  * @returns {UseMutationResult<User, Error, { id: string; data: AddUserRolesDTO }>} The mutation result.
+ * POST /api/users/{id}/roles
  */
 export const useAddUserRoles = () => {
   const queryClient = useQueryClient();
@@ -140,6 +148,50 @@ export const useAddUserRoles = () => {
         `${PATH}/${id}/roles`,
         data,
       );
+      return response.data.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["users", variables.id] });
+    },
+  });
+};
+
+/**
+ * Remove roles from a user.
+ * @param {{ id: string; data: RemoveUserRolesDTO }} params The ID and roles to remove.
+ * @returns {UseMutationResult<User, Error, { id: string; data: RemoveUserRolesDTO }>} The mutation result.
+ * DELETE /api/users/{id}/roles
+ */
+export const useRemoveUserRoles = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: RemoveUserRolesDTO }): Promise<User> => {
+      const response = await apiClient.delete<ApiResponse<User>>(`${PATH}/${id}/roles`, {
+        data,
+      });
+      return response.data.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["users", variables.id] });
+    },
+  });
+};
+
+/**
+ * Update a user's roles (add/remove lists).
+ * @param {{ id: string; data: UpdateUserRolesDTO }} params The ID and roles changes.
+ * @returns {UseMutationResult<User, Error, { id: string; data: UpdateUserRolesDTO }>} The mutation result.
+ * PATCH /api/users/{id}/roles
+ */
+export const useUpdateUserRoles = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: UpdateUserRolesDTO }): Promise<User> => {
+      const response = await apiClient.patch<ApiResponse<User>>(`${PATH}/${id}/roles`, data);
       return response.data.data;
     },
     onSuccess: (_, variables) => {

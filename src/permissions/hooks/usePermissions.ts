@@ -14,6 +14,7 @@ const PATH = "/permissions";
 /**
  * List all permissions.
  * @returns {UseQueryResult<Permission[]>} The query result.
+ * GET /api/permissions/
  */
 export function usePermissions() {
   return useQuery<Permission[]>({
@@ -31,6 +32,7 @@ export function usePermissions() {
  * Get a permission by ID.
  * @param {number} id id parameter.
  * @returns {UseQueryResult<Permission>} The query result.
+ * GET /api/permissions/{id}
  */
 export function usePermission(id: number) {
   return useQuery<Permission>({
@@ -49,6 +51,7 @@ export function usePermission(id: number) {
  * Create a new permission.
  * @param {CreatePermissionDTO} dto DTO containing details.
  * @returns {UseMutationResult<Permission, Error, CreatePermissionDTO>} The mutation result.
+ * POST /api/permissions/
  */
 export function useCreatePermission() {
   const queryClient = useQueryClient();
@@ -71,8 +74,9 @@ export function useCreatePermission() {
  * @param {number} id ID.
  * @param {ReplacePermissionDTO} dto DTO containing details.
  * @returns {UseMutationResult<Permission,
-    Error,
-    { id: number; dto: ReplacePermissionDTO }>} The mutation result.
+   Error,
+   { id: number; dto: ReplacePermissionDTO }>} The mutation result.
+ * PUT /api/permissions/{id}
  */
 export function useReplacePermission() {
   const queryClient = useQueryClient();
@@ -100,8 +104,9 @@ export function useReplacePermission() {
  * @param {number} id ID.
  * @param {UpdatePermissionDTO} dto DTO containing details.
  * @returns {UseMutationResult<Permission,
-    Error,
-    { id: number; dto: UpdatePermissionDTO }>} The mutation result.
+   Error,
+   { id: number; dto: UpdatePermissionDTO }>} The mutation result.
+ * PATCH /api/permissions/{id}
  */
 export function useUpdatePermission() {
   const queryClient = useQueryClient();
@@ -128,6 +133,7 @@ export function useUpdatePermission() {
  * Delete a permission by ID.
  * @param {number} dto DTO containing details.
  * @returns {UseMutationResult<Permission, Error, number>} The mutation result.
+ * DELETE /api/permissions/{id}
  */
 export function useDeletePermission() {
   const queryClient = useQueryClient();
@@ -153,6 +159,7 @@ export function useDeletePermission() {
  *
  * @param {number} id id parameter.
  * @returns {UseQueryResult<Permission>} The query result.
+ * GET /api/permissions/{id}/roles
  */
 export function usePermissionRoles(id: number) {
   return useQuery<Permission>({
@@ -174,6 +181,7 @@ export function usePermissionRoles(id: number) {
  * @returns {UseMutationResult<Permission,
     Error,
     { id: number; dto: AddPermissionRolesDTO }>} The mutation result.
+ * POST /api/permissions/{id}/roles
  */
 export function useAddPermissionRoles() {
   const queryClient = useQueryClient();

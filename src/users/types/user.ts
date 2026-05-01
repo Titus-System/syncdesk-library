@@ -1,4 +1,5 @@
 import { OAuthProvider } from "../../auth/types/auth";
+import type { Role } from "../../roles/types/role";
 
 export interface User {
   id: string;
@@ -11,9 +12,6 @@ export interface User {
   is_verified: boolean;
   roles?: Role[];
 }
-
-import type { Role } from "../../roles/types/role";
-import type { Permission } from "../../permissions/types/permission";
 
 export interface CreateUserDTO {
   email: string;
@@ -33,4 +31,13 @@ export type ReplaceUserDTO = CreateUserDTO;
 
 export interface AddUserRolesDTO {
   role_ids: number[];
+}
+
+export interface RemoveUserRolesDTO {
+  role_ids: number[];
+}
+
+export interface UpdateUserRolesDTO {
+  add_role_ids?: number[];
+  remove_role_ids?: number[];
 }
