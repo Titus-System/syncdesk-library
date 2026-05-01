@@ -45,6 +45,25 @@ export const useGetClientConversations = (client_id: string) => {
 };
 
 /**
+ * Get currently active conversations.
+ * @param {string} search optional search string (client name, email or last message).
+ * @returns {UseQueryResult<Conversation[]>} The query result.
+ * GET /api/conversations/active
+ */
+export const useGetActiveConversations = (search: string = "") => {
+  return useQuery({
+    queryKey: ["conversations", "active", { search }],
+    queryFn: async (): Promise<Conversation[]> => {
+      const response = await apiClient.get<ApiResponse<Conversation[]>>(
+        `${PATH}/active`,
+        { params: { search } },
+      );
+      return response.data.data;
+    },
+  });
+};
+
+/**
  * Get ticket messages with pagination.
  * @param {string} ticket_id ticket_id parameter.
  * @param {number} page page parameter.
@@ -119,6 +138,32 @@ export const useSetConversationAgent = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["conversations"] });
+    },
+  });
+};
+
+/**
+ * Assume a conversation (assign to current user).
+ * @param {string} chat_id Chat ID to assume.
+ * @returns {UseMutationResult<Conversation, Error, string>} The mutation result.
+ * POST /api/conversations/{chat_id}/assume
+ */
+export const useAssumeConversation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (chat_id: string) => {
+      const response = await apiClient.post<ApiResponse<Conversation>>(
+        `${PATH}/${chat_id}/assume`,
+      );
+      return response.data.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      queryClient.invalidateQueries({ queryKey: ["conversations", "active"] });
+      if (data?.ticket_id) {
+        queryClient.invalidateQueries({ queryKey: ["conversations", "ticket", data.ticket_id] });
+      }
     },
   });
 };
