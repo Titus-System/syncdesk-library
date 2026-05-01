@@ -114,6 +114,7 @@ export const useCreateTicket = () => {
  * Update a ticket's status.
  * @param {{ ticketId: string; payload: UpdateTicketStatusRequest }} params The ticket ID and status update payload.
  * @returns {UseMutationResult<UpdateTicketStatusResponse, Error, { ticketId: string; payload: UpdateTicketStatusRequest }>} The mutation result.
+ * @deprecated This endpoint is deprecated. Use `useUpdateTicket` instead for more flexible updates.
  */
 export const useUpdateTicketStatus = () => {
   const queryClient = useQueryClient();
