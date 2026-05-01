@@ -6,6 +6,8 @@ import {
   ReplaceUserDTO,
   UpdateUserDTO,
   AddUserRolesDTO,
+  RemoveUserRolesDTO,
+  UpdateUserRolesDTO,
 } from "../types/user";
 
 const PATH = "/users";
@@ -140,6 +142,50 @@ export const useAddUserRoles = () => {
         `${PATH}/${id}/roles`,
         data,
       );
+      return response.data.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["users", variables.id] });
+    },
+  });
+};
+
+/**
+ * Remove roles from a user.
+ * @param {{ id: string; data: RemoveUserRolesDTO }} params The ID and roles to remove.
+ * @returns {UseMutationResult<User, Error, { id: string; data: RemoveUserRolesDTO }>} The mutation result.
+ * DELETE /api/users/{id}/roles
+ */
+export const useRemoveUserRoles = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: RemoveUserRolesDTO }): Promise<User> => {
+      const response = await apiClient.delete<ApiResponse<User>>(`${PATH}/${id}/roles`, {
+        data,
+      });
+      return response.data.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["users", variables.id] });
+    },
+  });
+};
+
+/**
+ * Update a user's roles (add/remove lists).
+ * @param {{ id: string; data: UpdateUserRolesDTO }} params The ID and roles changes.
+ * @returns {UseMutationResult<User, Error, { id: string; data: UpdateUserRolesDTO }>} The mutation result.
+ * PATCH /api/users/{id}/roles
+ */
+export const useUpdateUserRoles = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: UpdateUserRolesDTO }): Promise<User> => {
+      const response = await apiClient.patch<ApiResponse<User>>(`${PATH}/${id}/roles`, data);
       return response.data.data;
     },
     onSuccess: (_, variables) => {
