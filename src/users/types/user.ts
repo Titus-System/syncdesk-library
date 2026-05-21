@@ -25,7 +25,7 @@ export interface CreateUserDTO {
   role_ids?: number[];
 }
 
-export type UpdateUserDTO = Partial<CreateUserDTO>;
+export type UpdateUserDTO = Partial<Omit<CreateUserDTO, "role_ids">>;
 
 export type ReplaceUserDTO = CreateUserDTO;
 

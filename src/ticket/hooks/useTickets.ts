@@ -16,6 +16,9 @@ import {
   EscalateTicketRequest,
   TransferTicketRequest,
   UpdateTicketRequest,
+  TicketDashboardResponse,
+  AgentClosingsChartResponse,
+  IssuesByProductChartResponse,
 } from "../types/ticket";
 
 const PATH = "/tickets";
@@ -64,6 +67,65 @@ export const useTicketQueue = (filters: TicketQueueFilters = {}) => {
       const response = await apiClient.get<
         ApiResponse<TicketQueueListResponse>
       >(`${PATH}/queue`, { params: filters });
+      return response.data.data;
+    },
+  });
+};
+
+/**
+ * Get ticket dashboard metrics for a given ticket type.
+ * @param {TicketType} type Ticket type filter (issue/access/new_feature).
+ * @returns {UseQueryResult<TicketDashboardResponse>} The query result.
+ * GET /api/tickets/dashboard
+ */
+export const useGetTicketDashboard = (type: string) => {
+  return useQuery({
+    queryKey: ["tickets", "dashboard", { type }],
+    queryFn: async (): Promise<TicketDashboardResponse> => {
+      const response = await apiClient.get<
+        ApiResponse<TicketDashboardResponse>
+      >(`${PATH}/dashboard`, { params: { type } });
+      return response.data.data;
+    },
+    enabled: !!type,
+  });
+};
+
+/**
+ * Get agent closings chart data.
+ * @param {{ month?: number; year?: number; level?: string }} filters Chart filters.
+ * @returns {UseQueryResult<AgentClosingsChartResponse>} The query result.
+ * GET /api/tickets/dashboard/agent-closings
+ */
+export const useGetAgentClosingsChart = (
+  filters: { month?: number; year?: number; level?: string } = {},
+) => {
+  return useQuery({
+    queryKey: ["tickets", "dashboard", "agent-closings", filters],
+    queryFn: async (): Promise<AgentClosingsChartResponse> => {
+      const response = await apiClient.get<
+        ApiResponse<AgentClosingsChartResponse>
+      >(`${PATH}/dashboard/agent-closings`, { params: filters });
+      return response.data.data;
+    },
+  });
+};
+
+/**
+ * Get issues by product time series chart.
+ * @param {{ company_id?: string; date_from?: string; date_to?: string }} filters Chart filters.
+ * @returns {UseQueryResult<IssuesByProductChartResponse>} The query result.
+ * GET /api/tickets/dashboard/issues-by-product
+ */
+export const useGetIssuesByProductChart = (
+  filters: { company_id?: string; date_from?: string; date_to?: string } = {},
+) => {
+  return useQuery({
+    queryKey: ["tickets", "dashboard", "issues-by-product", filters],
+    queryFn: async (): Promise<IssuesByProductChartResponse> => {
+      const response = await apiClient.get<
+        ApiResponse<IssuesByProductChartResponse>
+      >(`${PATH}/dashboard/issues-by-product`, { params: filters });
       return response.data.data;
     },
   });

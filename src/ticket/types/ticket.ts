@@ -171,3 +171,70 @@ export interface UpdateTicketRequest {
   product?: string;
   description?: string;
 }
+
+// --- Dashboard / Charts types ---
+export interface TicketDashboardKPIs {
+  open_count: number;
+  cancelled_count: number;
+  unassigned_count: number;
+  overdue_count: number;
+}
+
+export type TicketStatusBucket = {
+  bucket: "pendente" | "em_atendimento" | "nao_atribuidos";
+  label: string;
+  count: number;
+};
+
+export type TicketAssigneeBucket = {
+  agent_id?: string | null;
+  agent_name: string;
+  count: number;
+  is_aggregate?: boolean;
+};
+
+export interface TicketDashboardResponse {
+  type: TicketType;
+  generated_at: string;
+  kpis: TicketDashboardKPIs;
+  open_breakdown: TicketStatusBucket[];
+  assigned_breakdown: TicketAssigneeBucket[];
+}
+
+export interface AgentClosingsBucket {
+  agent_id?: string | null;
+  agent_name: string;
+  issue_count: number;
+  access_count: number;
+  new_feature_count: number;
+  total: number;
+  is_aggregate?: boolean;
+}
+
+export interface AgentClosingsChartResponse {
+  month: number;
+  year: number;
+  level?: string | null;
+  agents: AgentClosingsBucket[];
+  generated_at: string;
+}
+
+export interface ProductSeriesPoint {
+  month: string;
+  count: number;
+}
+
+export interface ProductSeries {
+  product: string;
+  total: number;
+  points: ProductSeriesPoint[];
+}
+
+export interface IssuesByProductChartResponse {
+  period_start: string;
+  period_end: string;
+  company_id?: string | null;
+  months: string[];
+  series: ProductSeries[];
+  generated_at: string;
+}
