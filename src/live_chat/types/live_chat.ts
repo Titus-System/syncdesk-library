@@ -1,23 +1,3 @@
-export interface SendMessagePayload {
-  type: "text" | "file";
-  content: string;
-  mime_type?: string | null;
-  filename?: string | null;
-  responding_to?: string | null;
-}
-
-export interface ChatMessage {
-  id: string;
-  conversation_id: string;
-  sender_id: string | "System";
-  timestamp: string;
-  type: "text" | "file";
-  content: string;
-  mime_type?: string | null;
-  filename?: string | null;
-  responding_to?: string | null;
-}
-
 export interface Conversation {
   _id: string;
   ticket_id: string;
@@ -45,4 +25,42 @@ export interface PaginatedMessages {
   page: number;
   limit: number;
   has_next: boolean;
+}
+
+export interface SendMessagePayload {
+  type: "text" | "file";
+  content: string;
+  mime_type?: string | null;
+  filename?: string | null;
+  responding_to?: string | null;
+}
+
+export interface ChatMessage {
+  id: string;
+  conversation_id: string;
+  sender_id: string | "System";
+  timestamp: string;
+  type: "text" | "file";
+  content: string;
+  mime_type?: string | null;
+  filename?: string | null;
+  responding_to?: string | null;
+}
+export interface LiveChatSocketMeta {
+  success: boolean;
+  timestamp: string;
+  request_id?: string;
+}
+
+export interface LiveChatSocketPayload {
+  meta: LiveChatSocketMeta;
+  data?: ChatMessage;
+
+  // Error fields from ErrorContent
+  type?: string;
+  title?: string;
+  status?: number;
+  detail?: string;
+  instance?: string;
+  errors?: any[];
 }

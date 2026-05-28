@@ -1,7 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { config } from "../../config";
-import type { ChatMessage, SendMessagePayload } from "../types/live_chat";
+import type {
+  ChatMessage,
+  SendMessagePayload,
+  LiveChatSocketPayload,
+} from "../types/live_chat";
 import type { ApiResponse } from "../../api";
 
 export function useLiveChatWebSocket(chatId: string | null | undefined) {
@@ -36,30 +40,29 @@ export function useLiveChatWebSocket(chatId: string | null | undefined) {
 
   const finalUrl = wsUrl();
 
-  const { sendMessage, lastJsonMessage, readyState } = useWebSocket<
-    ApiResponse<ChatMessage>
-  >(
-    finalUrl,
-    {
-      // Using token as a subprotocol to pass it due to WebSocket standard not allowing custom headers in browsers.
-      // E.g. Sec-WebSocket-Protocol: access_token, <token>
-      protocols: token ? ["access_token", token] : [],
-      shouldReconnect: (closeEvent) => {
-        // Do not reconnect on unauthorized or permission denied errors
-        if (
-          closeEvent.code === 1008 ||
-          closeEvent.code === 403 ||
-          closeEvent.code === 1011
-        )
-          return false;
-        return true;
+  const { sendMessage, lastJsonMessage, readyState } =
+    useWebSocket<LiveChatSocketPayload>(
+      finalUrl,
+      {
+        // Using token as a subprotocol to pass it due to WebSocket standard not allowing custom headers in browsers.
+        // E.g. Sec-WebSocket-Protocol: access_token, <token>
+        protocols: token ? ["access_token", token] : [],
+        shouldReconnect: (closeEvent) => {
+          // Do not reconnect on unauthorized or permission denied errors
+          if (
+            closeEvent.code === 1008 ||
+            closeEvent.code === 403 ||
+            closeEvent.code === 1011
+          )
+            return false;
+          return true;
+        },
+        reconnectAttempts: 10,
+        reconnectInterval: 3000,
       },
-      reconnectAttempts: 10,
-      reconnectInterval: 3000,
-    },
-    // Only connect if we have a valid URL (meaning chat id and token exist)
-    !!finalUrl,
-  );
+      // Only connect if we have a valid URL (meaning chat id and token exist)
+      !!finalUrl,
+    );
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
