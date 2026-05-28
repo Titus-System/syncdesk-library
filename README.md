@@ -16,14 +16,23 @@ npm install @titus-system/syncdesk
 
 Alternatively, you can install locally bypassing the npm registry.
 
+Clone the repo:
+
+```sh
+git clone https://github.com/Titus-System/syncdesk-library.git
+```
+
+Build the library and create a tarball file:
+
 ```sh
 npm run build
 npm pack
 ```
 
-It creates a compressed tarball file in your folder. You can install it in your project with:
+It creates a compressed tarball file in your folder. You can install it in your project with the following command, replacing the path with the actual path to the tarball file:
 
 ```sh
+# Example:
 npm install /path/to/your/library-1.0.0.tgz
 ```
 
