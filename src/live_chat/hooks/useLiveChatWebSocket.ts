@@ -8,7 +8,10 @@ import type {
 } from "../types/live_chat";
 import type { ApiResponse } from "../../api";
 
-export function useLiveChatWebSocket(chatId: string | null | undefined) {
+export function useLiveChatWebSocket(
+  chatId: string | null | undefined,
+  reconnectTrigger: number = 0,
+) {
   const [token, setToken] = useState<string | null>(null);
 
   // We need the token resolved before connecting to WebSocket
@@ -29,12 +32,25 @@ export function useLiveChatWebSocket(chatId: string | null | undefined) {
       const url = new URL(config.baseURL);
       url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
       url.pathname = `${url.pathname.replace(/\/$/, "")}/live_chat/room/${chatId}`;
+
+      // Append the trigger to force a new URL, which makes react-use-websocket reconnect
+      if (reconnectTrigger > 0) {
+        url.searchParams.append("rt", reconnectTrigger.toString());
+      }
+
       return url.toString();
     } catch {
       // If baseURL is relative (e.g. "/api"), use window location
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
       const host = window.location.host;
-      return `${protocol}//${host}${config.baseURL.replace(/\/$/, "")}/live_chat/room/${chatId}`;
+      const baseUrl = config.baseURL.replace(/\/$/, "");
+      let finalString = `${protocol}//${host}${baseUrl}/live_chat/room/${chatId}`;
+
+      if (reconnectTrigger > 0) {
+        finalString += `?rt=${reconnectTrigger}`;
+      }
+
+      return finalString;
     }
   };
 
