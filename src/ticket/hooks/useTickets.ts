@@ -19,6 +19,7 @@ import {
   TicketDashboardResponse,
   AgentClosingsChartResponse,
   IssuesByProductChartResponse,
+  CancelTicketRequest,
 } from "../types/ticket";
 
 const PATH = "/tickets";
@@ -383,5 +384,61 @@ export const useUpdateTicket = (ticketId: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TICKET_KEYS.detail(ticketId) });
     },
+  });
+};
+
+/**
+ * Cancel a ticket.
+ * POST /api/tickets/{ticket_id}/cancel
+ */
+export const useCancelTicket = (ticketId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: CancelTicketRequest) => {
+      const response = await apiClient.post<ApiResponse<TicketResponse>>(
+        `${PATH}/${ticketId}/cancel`,
+        payload,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TICKET_KEYS.detail(ticketId) });
+      queryClient.invalidateQueries({ queryKey: TICKET_KEYS.all });
+    },
+  });
+};
+
+/**
+ * Search tickets by free text.
+ * GET /api/tickets/search?search_query=...
+ */
+export const useSearchTickets = (searchQuery: string | null) => {
+  return useQuery({
+    queryKey: ["tickets", "search", searchQuery],
+    queryFn: async (): Promise<TicketResponse[]> => {
+      const response = await apiClient.get<ApiResponse<TicketResponse[]>>(
+        `${PATH}/search`,
+        { params: { search_query: searchQuery } },
+      );
+      return response.data.data;
+    },
+    enabled: !!searchQuery,
+  });
+};
+
+/**
+ * Get ticket history entries.
+ * GET /api/tickets/{ticket_id}/history
+ */
+export const useTicketHistory = (ticketId: string) => {
+  return useQuery({
+    queryKey: ["tickets", ticketId, "history"],
+    queryFn: async () => {
+      const response = await apiClient.get<ApiResponse<any[]>>(
+        `${PATH}/${ticketId}/history`,
+      );
+      return response.data.data;
+    },
+    enabled: !!ticketId,
   });
 };

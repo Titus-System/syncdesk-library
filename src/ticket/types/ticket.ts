@@ -66,6 +66,10 @@ export interface TicketHistoryResponse {
   transfer_reason?: string;
 }
 
+export interface CancelTicketRequest {
+  reason: string;
+}
+
 export interface TicketCommentResponse {
   comment_id: string;
   author: string;
