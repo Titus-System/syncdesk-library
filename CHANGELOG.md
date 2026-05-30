@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for admin charts ([#162](https://github.com/Titus-System/SyncDesk/issues/162))
 - Reconnect WebSocket on connection loss ([#118](https://github.com/Titus-System/SyncDesk/issues/118))
+- Upload de diferentes formatos de arquivos pelo chat ([#154](https://github.com/Titus-System/SyncDesk/issues/154))
 
 ### Changed
 

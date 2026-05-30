@@ -9,6 +9,7 @@ export * from "./ticket";
 export * from "./companies";
 export * from "./products";
 export * from "./chatbot-ura";
+export * from "./files";
 
 export { config } from "./config";
 export type { LibraryConfig } from "./config";
