@@ -41,3 +41,9 @@ export interface UpdateUserRolesDTO {
   add_role_ids?: number[];
   remove_role_ids?: number[];
 }
+
+export interface CurrentUserAvatarDTO {
+  file_id: string | null;
+  download_url: string | null;
+  expires_at: string | null;
+}

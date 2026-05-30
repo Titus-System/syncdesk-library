@@ -11,6 +11,8 @@ import {
   UserCreatedResponse,
   UserLoginRequest,
   UserWithRoles,
+  RefreshSessionRequest,
+  RefreshSessionResponse,
 } from "../types/auth";
 import { User } from "../../users/types/user";
 
@@ -176,6 +178,28 @@ export const useResetPassword = () => {
   return useMutation({
     mutationFn: async (data: ResetPasswordRequest): Promise<void> => {
       await apiClient.post(`${PATH}/reset-password`, data);
+    },
+  });
+};
+
+/**
+ * Refresh session tokens using a refresh token.
+ * POST /api/auth/refresh
+ */
+export const useRefresh = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (
+      payload: RefreshSessionRequest,
+    ): Promise<RefreshSessionResponse> => {
+      const response = await apiClient.post<
+        ApiResponse<RefreshSessionResponse>
+      >(`${PATH}/refresh`, payload);
+      return response.data.data;
+    },
+    onSuccess: () => {
+      // refresh may change session state; refetch current user
+      queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   });
 };

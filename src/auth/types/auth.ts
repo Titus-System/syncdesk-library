@@ -59,3 +59,12 @@ export interface UserWithRoles {
   name?: string | null;
   roles: string[];
 }
+
+export interface RefreshSessionRequest {
+  refresh_token: string;
+}
+
+export interface RefreshSessionResponse {
+  access_token: string;
+  refresh_token: string;
+}

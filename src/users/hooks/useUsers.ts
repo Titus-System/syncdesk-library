@@ -8,6 +8,7 @@ import {
   AddUserRolesDTO,
   RemoveUserRolesDTO,
   UpdateUserRolesDTO,
+  CurrentUserAvatarDTO,
 } from "../types/user";
 
 const PATH = "/users";
@@ -167,10 +168,19 @@ export const useRemoveUserRoles = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: RemoveUserRolesDTO }): Promise<User> => {
-      const response = await apiClient.delete<ApiResponse<User>>(`${PATH}/${id}/roles`, {
-        data,
-      });
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: RemoveUserRolesDTO;
+    }): Promise<User> => {
+      const response = await apiClient.delete<ApiResponse<User>>(
+        `${PATH}/${id}/roles`,
+        {
+          data,
+        },
+      );
       return response.data.data;
     },
     onSuccess: (_, variables) => {
@@ -190,13 +200,99 @@ export const useUpdateUserRoles = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: UpdateUserRolesDTO }): Promise<User> => {
-      const response = await apiClient.patch<ApiResponse<User>>(`${PATH}/${id}/roles`, data);
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: UpdateUserRolesDTO;
+    }): Promise<User> => {
+      const response = await apiClient.patch<ApiResponse<User>>(
+        `${PATH}/${id}/roles`,
+        data,
+      );
       return response.data.data;
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["users", variables.id] });
+    },
+  });
+};
+
+/**
+ * Get current user's avatar metadata + presigned URL.
+ * GET /api/users/me/avatar
+ */
+export const useGetMyAvatar = () => {
+  return useQuery({
+    queryKey: ["users", "me", "avatar"],
+    queryFn: async (): Promise<CurrentUserAvatarDTO> => {
+      const response = await apiClient.get<ApiResponse<CurrentUserAvatarDTO>>(
+        `${PATH}/me/avatar`,
+      );
+      return response.data.data;
+    },
+  });
+};
+
+/**
+ * Set current user's avatar to a confirmed file_id.
+ * PUT /api/users/me/avatar
+ */
+export const useSetMyAvatar = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { file_id: string }) => {
+      const response = await apiClient.put<ApiResponse<any>>(
+        `${PATH}/me/avatar`,
+        payload,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.invalidateQueries({ queryKey: ["users", "me", "avatar"] });
+    },
+  });
+};
+
+/**
+ * Clear current user's avatar.
+ * DELETE /api/users/me/avatar
+ */
+export const useClearMyAvatar = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const response = await apiClient.delete<ApiResponse<any>>(
+        `${PATH}/me/avatar`,
+      );
+      return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+      queryClient.invalidateQueries({ queryKey: ["users", "me", "avatar"] });
+    },
+  });
+};
+
+/**
+ * Deactivate a user (soft-delete / deactivate account).
+ * POST /api/users/{user_id}/deactivate
+ */
+export const useDeactivateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await apiClient.post<ApiResponse<any>>(
+        `${PATH}/${id}/deactivate`,
+      );
+      return response.data.data;
+    },
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["users", id] });
     },
   });
 };
