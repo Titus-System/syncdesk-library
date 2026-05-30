@@ -9,9 +9,14 @@ import {
   RemoveUserRolesDTO,
   UpdateUserRolesDTO,
   CurrentUserAvatarDTO,
+  UserLevelResponse,
+  UserLevelsResponse,
+  LevelUsersResponse,
+  DeleteUserLevelResponse,
 } from "../types/user";
 
 const PATH = "/users";
+const LEVELS_PATH = "/levels";
 
 /**
  * Get all users.
@@ -293,6 +298,104 @@ export const useDeactivateUser = () => {
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["users", id] });
+    },
+  });
+};
+
+/**
+ * Add a level to a user.
+ * POST /api/users/{user_id}/levels/{level_id}
+ */
+export const useAddUserLevel = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      userId,
+      levelId,
+    }: {
+      userId: string;
+      levelId: number;
+    }): Promise<UserLevelResponse> => {
+      const response = await apiClient.post<ApiResponse<UserLevelResponse>>(
+        `${PATH}/${userId}/levels/${levelId}`,
+      );
+      return response.data.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["users", variables.userId] });
+      queryClient.invalidateQueries({
+        queryKey: ["users", variables.userId, "levels"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["levels", variables.levelId, "users"],
+      });
+    },
+  });
+};
+
+/**
+ * Get levels for a user.
+ * GET /api/users/{user_id}/levels
+ */
+export const useGetUserLevels = (userId: string) => {
+  return useQuery({
+    queryKey: ["users", userId, "levels"],
+    queryFn: async (): Promise<UserLevelsResponse> => {
+      const response = await apiClient.get<ApiResponse<UserLevelsResponse>>(
+        `${PATH}/${userId}/levels`,
+      );
+      return response.data.data;
+    },
+    enabled: !!userId,
+  });
+};
+
+/**
+ * Get users for a level.
+ * GET /api/levels/{level_id}/users
+ */
+export const useGetLevelUsers = (levelId: number | string) => {
+  return useQuery({
+    queryKey: ["levels", levelId, "users"],
+    queryFn: async (): Promise<LevelUsersResponse> => {
+      const response = await apiClient.get<ApiResponse<LevelUsersResponse>>(
+        `${LEVELS_PATH}/${levelId}/users`,
+      );
+      return response.data.data;
+    },
+    enabled: !!levelId,
+  });
+};
+
+/**
+ * Delete a level from a user.
+ * DELETE /api/users/{user_id}/levels/{level_id}
+ */
+export const useDeleteUserLevel = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      userId,
+      levelId,
+    }: {
+      userId: string;
+      levelId: number;
+    }): Promise<DeleteUserLevelResponse> => {
+      const response = await apiClient.delete<
+        ApiResponse<DeleteUserLevelResponse>
+      >(`${PATH}/${userId}/levels/${levelId}`);
+      return response.data.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["users", variables.userId] });
+      queryClient.invalidateQueries({
+        queryKey: ["users", variables.userId, "levels"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["levels", variables.levelId, "users"],
+      });
     },
   });
 };

@@ -5,6 +5,16 @@ export {
   useUpdateUser,
   usePatchUser,
   useAddUserRoles,
+  useRemoveUserRoles,
+  useUpdateUserRoles,
+  useGetMyAvatar,
+  useSetMyAvatar,
+  useClearMyAvatar,
+  useDeactivateUser,
+  useAddUserLevel,
+  useGetUserLevels,
+  useGetLevelUsers,
+  useDeleteUserLevel,
 } from "./hooks/useUsers";
 
 export type {
@@ -13,4 +23,13 @@ export type {
   UpdateUserDTO,
   ReplaceUserDTO,
   AddUserRolesDTO,
+  RemoveUserRolesDTO,
+  UpdateUserRolesDTO,
+  CurrentUserAvatarDTO,
+  LevelResponse,
+  UserLevelResponse,
+  UserLevelsResponse,
+  LevelUserResponse,
+  LevelUsersResponse,
+  DeleteUserLevelResponse,
 } from "./types/user";

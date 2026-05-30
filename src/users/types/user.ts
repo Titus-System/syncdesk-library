@@ -47,3 +47,37 @@ export interface CurrentUserAvatarDTO {
   download_url: string | null;
   expires_at: string | null;
 }
+
+export interface LevelResponse {
+  id: number;
+  name: string;
+}
+
+export interface UserLevelResponse {
+  user_id: string;
+  level: LevelResponse;
+  created_at: string;
+}
+
+export interface UserLevelsResponse {
+  user_id: string;
+  levels: LevelResponse[];
+}
+
+export interface LevelUserResponse {
+  id: string;
+  name?: string | null;
+  email: string;
+  username?: string | null;
+}
+
+export interface LevelUsersResponse {
+  level: LevelResponse;
+  users: LevelUserResponse[];
+}
+
+export interface DeleteUserLevelResponse {
+  user_id: string;
+  level_id: number;
+  deleted: boolean;
+}
